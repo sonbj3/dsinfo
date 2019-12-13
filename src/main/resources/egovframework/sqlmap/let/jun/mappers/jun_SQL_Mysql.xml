@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="junex">
+
+<typeAlias  alias="memberBean" type="jun.vo.MemberBean"/>
+	<resultMap id="Code" class="jun.vo.MemberBean">
+		<result property="id"    	column="id"   	  columnIndex="1"/>
+		<result property="password" column="password" columnIndex="2"/>
+		<result property="name"   	column="name"     columnIndex="3"/>
+		<result property="email"   	column="email"    columnIndex="4"/>
+	</resultMap>
+<typeAlias  alias="BoardBean" type="jun.vo.BoardBean"/>
+	<resultMap id="junList" class="jun.vo.BoardBean">
+		<result property="seq" column="seq" columnIndex="1"/>
+		<result property="title" column="title" columnIndex="2"/>
+		<result property="name" column="name" columnIndex="3"/>
+	</resultMap>
+	<!-- 게시판 목록 -->
+	<select id="junList" resultClass="jun.vo.BoardBean">
+			SELECT *
+              FROM BOARD
+	</select>
+	
+	<!-- 일반 로그인 -->
+	<select id="memberDAO.actionLogin" resultMap="Code" resultClass="jun.vo.MemberBean">
+			SELECT *
+              FROM MEMBER
+             WHERE id = #id#
+               AND password = #password#
+	</select>
+	<select id="jun.selectUserInfo" parameterClass="jun.vo.MemberBean" resultMap="Code">
+		SELECT id
+			 , password
+			 , name
+			 , email 
+		FROM junex.member
+	</select>
+
+	<select id="jun.userCheck" parameterClass="jun.vo.MemberBean" resultClass="jun.vo.MemberBean">
+		SELECT * 
+		FROM MEMBER 
+		WHERE id=#id# 
+		AND password=#password#
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO MEMBER(
+		  	   id
+		  	 , password
+		  	 , name
+		  	 , email
+		  )VALUES(
+		  	   #id#
+		  	 , #password#
+		  	 , #name#
+		  	 , #email#
+		  )
+	</insert>
+	
+	<select id="boardDAO.List">
+		SELECT number
+			 , title
+			 , name
+		  FROM BOARD	
+	</select>
+</sqlMap>            
